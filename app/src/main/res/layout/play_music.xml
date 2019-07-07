@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@drawable/bg_play"
+    android:layout_height="match_parent"
+    >
+    <LinearLayout
+        android:id="@+id/ll_title"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:layout_width="30dp"
+            android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+            android:layout_height="30dp" />
+        <TextView
+            android:id="@+id/tv_namemusic"
+            android:singleLine="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:textColor="@color/grey_50"
+            android:textSize="16dp"
+            android:text="name"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/ll_title"
+        android:layout_width="240dp"
+        android:src="@drawable/img"
+        android:layout_centerHorizontal="true"
+        android:layout_height="240dp" />
+
+    <SeekBar
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/iv_content"
+        android:id="@+id/seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_runtime"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/seekbar"
+        android:textColor="@color/grey_50"
+        android:textSize="14dp"
+        android:text="00:00"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_duration"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/seekbar"
+        android:textColor="@color/grey_50"
+        android:textSize="14dp"
+        android:text="00:00"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/seekbar"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btn_shuffle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shuffle"
+            android:padding="10dp" />
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/back" />
+
+        <ImageButton
+            android:id="@+id/btn_play"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/pause" />
+
+        <ImageButton
+            android:id="@+id/btn_next"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/next" />
+
+        <ImageButton
+            android:id="@+id/btn_repeat"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/repeat" />
+    </LinearLayout>
+</RelativeLayout>

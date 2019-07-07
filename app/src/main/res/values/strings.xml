@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MusicPlayer</string>
+    <string name="tab_text_1">Songs</string>
+    <string name="tab_text_2">PlayList</string>
+    <string name="tab_text_3">Album</string>
+    <string name="tap_text_4">GENRES</string>
+
+
+</resources>
+
