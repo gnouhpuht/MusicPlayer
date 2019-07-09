@@ -17,10 +17,10 @@
             android:layout_height="60dp" />
         <RelativeLayout
             android:layout_marginTop="10dp"
-            android:layout_width="156dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content">
             <TextView
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="6dp"
                 android:id="@+id/tv_name_notify"
                 android:text="Stay with me"
                 android:singleLine="true"
@@ -35,42 +35,44 @@
                 android:text="Rochus"
                 android:textSize="12dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="6dp"
                 android:textColor="@color/grey_50"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
         </RelativeLayout>
 
-        <ImageButton
+        <ImageView
             android:id="@+id/btn_back_notify"
-            android:background="@drawable/apollo_holo_dark_prev"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/ic_skip_previous_black_24dp"
             android:layout_gravity="center"
             android:layout_width="32dp"
             android:layout_height="32dp" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/btn_play_notify"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/apollo_holo_dark_play"
-            android:layout_gravity="center"
-            android:layout_width="32dp"
-            android:layout_height="32dp" />
-        <ImageButton
-            android:id="@+id/btn_next_notify"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/apollo_holo_dark_next"
-            android:layout_gravity="center"
-            android:layout_width="32dp"
-            android:layout_height="32dp" />
-        <ImageButton
-            android:id="@+id/btn_close_notify"
-            android:layout_marginTop="4dp"
             android:layout_marginLeft="10dp"
-            android:background="?selectableItemBackgroundBorderless"
-            android:layout_width="wrap_content"
-            android:src="@drawable/ic_close_black_24dp"
-            android:layout_height="wrap_content" />
+
+            android:src="@drawable/ic_play_arrow_black_24dp"
+            android:layout_gravity="center"
+            android:layout_width="32dp"
+            android:layout_height="32dp" />
+        <ImageView
+            android:id="@+id/btn_next_notify"
+            android:layout_marginLeft="10dp"
+
+            android:src="@drawable/ic_skip_next_black_24dp"
+            android:layout_gravity="center"
+            android:layout_width="32dp"
+            android:layout_height="32dp" />
+        <!--<ImageView-->
+            <!--android:id="@+id/btn_close_notify"-->
+            <!--android:layout_marginTop="4dp"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:src="@drawable/ic_close_black_24dp"-->
+            <!--android:layout_height="wrap_content" />-->
     </LinearLayout>
 
 </RelativeLayout>

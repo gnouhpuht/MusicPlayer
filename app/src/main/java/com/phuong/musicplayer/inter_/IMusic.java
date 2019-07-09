@@ -1,7 +1,7 @@
 package com.phuong.musicplayer.inter_;
 
 
-import com.phuong.musicplayer.component.ItemMusic;
+import com.phuong.musicplayer.item.ItemMusic;
 
 public interface IMusic {
     int getCountItem();

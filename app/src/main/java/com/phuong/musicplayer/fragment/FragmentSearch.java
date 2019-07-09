@@ -28,12 +28,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.phuong.musicplayer.R;
 import com.phuong.musicplayer.adapter.AdapterMusic;
-import com.phuong.musicplayer.component.ItemMusic;
+import com.phuong.musicplayer.item.ItemMusic;
 import com.phuong.musicplayer.inter_.IMusic;
-import com.phuong.musicplayer.service.ServiceMusic;
+import com.phuong.musicplayer.component.ServiceMusic;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class FragmentSearch extends Fragment implements IMusic {
     private ServiceMusic serviceMusic;
@@ -55,7 +54,7 @@ public class FragmentSearch extends Fragment implements IMusic {
         View view=inflater.inflate(R.layout.fragment_search,container,false);
         rcMusic = view.findViewById(R.id.rc_music_search);
         rcMusic.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        adapter=new AdapterMusic(this);
+        adapter=new AdapterMusic(new ArrayList<ItemMusic>(), this);
         rcMusic.setAdapter(adapter);
         etSearch=view.findViewById(R.id.et_search);
         etSearch.addTextChangedListener(new TextWatcher() {
@@ -71,13 +70,26 @@ public class FragmentSearch extends Fragment implements IMusic {
 
             @Override
             public void afterTextChanged(Editable s) {
-                String nameMusic = etSearch.getText().toString();
-                serviceMusic.getMusicSearch(nameMusic);
+                adapter.getFilter().filter(etSearch.getText().toString(), new Filter.FilterListener() {
+                    @Override
+                    public void onFilterComplete(int i) {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+
             }
         });
         createConnectService();
         return view;
     }
+
+
+
+    public void updateListMusic(ArrayList<ItemMusic> musicArrayList){
+        adapter.updateMusic(musicArrayList);
+    }
+
+
 
 
     @Override
@@ -108,37 +120,7 @@ public class FragmentSearch extends Fragment implements IMusic {
         });
     }
 
-//    public Filter getFilter() {
-//        final List<ItemMusic>[] musicListFiltered = new List[]{new ArrayList<>()};
-//        return new Filter() {
-//            @Override
-//            protected FilterResults performFiltering(CharSequence charSequence) {
-//                String charString = charSequence.toString();
-//                if (charString.isEmpty()) {
-//                    musicListFiltered[0] = serviceMusic.getAllMusic();
-//                } else {
-//                    List<ItemMusic> filteredList = new ArrayList<>();
-//                    for (ItemMusic music : serviceMusic.getAllMusic()) {
-//                        if (music.getTitle().toLowerCase().contains(charString.toLowerCase())) {
-//                            filteredList.add(music);
-//                        }
-//                    }
-//                    musicListFiltered[0] = filteredList;
-//                }
-//
-//                FilterResults filterResults = new FilterResults();
-//                filterResults.values = musicListFiltered[0];
-//                return filterResults;
-//            }
-//
-//            @Override
-//            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-//                musicListFiltered[0] = (ArrayList<ItemMusic>) filterResults.values;
-//
-//                rcMusic.getAdapter().notifyDataSetChanged();
-//            }
-//        };
-//    }
+
 
     @Override
     public int getCountItem() {

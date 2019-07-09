@@ -27,12 +27,13 @@ import androidx.fragment.app.Fragment;
 
 
 import com.phuong.musicplayer.R;
-import com.phuong.musicplayer.component.ItemMusic;
+import com.phuong.musicplayer.item.ItemMusic;
 import com.phuong.musicplayer.inter_.Action1;
 import com.phuong.musicplayer.musicmanager.MusicManager;
-import com.phuong.musicplayer.service.ServiceMusic;
+import com.phuong.musicplayer.component.ServiceMusic;
 
 import java.text.SimpleDateFormat;
+import java.util.Random;
 
 import static android.content.Context.BIND_AUTO_CREATE;
 
@@ -173,7 +174,7 @@ public class FragmentPlay extends Fragment implements Action1<MediaPlayer>, View
 
     public void upSongInfo(int position){
         tvTitle.setText(getSong(position).getName());
-//        tvArtist.setText(getSong(position).getArtisis());
+//        tvArtist.setText(getSong(position).getArtists());
         tvDuration.setText(format.format(getSong(position).getDuration()));
         Uri sArtworkUri = Uri
                 .parse("content://media/external/audio/albumart");
@@ -231,6 +232,24 @@ public class FragmentPlay extends Fragment implements Action1<MediaPlayer>, View
                 }
 
                 position = position - 1;
+                if ( serviceMusic != null ){
+                    upSongInfo(position);
+                    serviceMusic.playMusic(position);
+                }
+                btnPlay.setBackgroundResource(R.drawable.pause);
+                makeAnimation(R.anim.rotate);
+                break;
+            case R.id.btn_shuffle:
+                Random rd=new Random();
+                position = rd.nextInt(serviceMusic.getAllMusic().size() - 1) + 1;
+                if ( serviceMusic != null ){
+                    upSongInfo(position);
+                    serviceMusic.playMusic(position);
+                }
+                btnPlay.setBackgroundResource(R.drawable.pause);
+                makeAnimation(R.anim.rotate);
+                break;
+            case R.id.btn_repeat:
                 if ( serviceMusic != null ){
                     upSongInfo(position);
                     serviceMusic.playMusic(position);

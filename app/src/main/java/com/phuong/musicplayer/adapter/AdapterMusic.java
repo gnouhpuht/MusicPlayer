@@ -1,4 +1,5 @@
 package com.phuong.musicplayer.adapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.phuong.musicplayer.R;
-import com.phuong.musicplayer.component.ItemMusic;
+import com.phuong.musicplayer.item.ItemMusic;
 import com.phuong.musicplayer.inter_.IMusic;
-import com.phuong.musicplayer.service.ServiceMusic;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,14 +25,15 @@ public class AdapterMusic extends RecyclerView.Adapter<AdapterMusic.MusicViewHol
     private List<ItemMusic> musicList;
     private List<ItemMusic> musicFullList;
 
-    public AdapterMusic(IMusic inter) {
+    public AdapterMusic(List<ItemMusic> musicList,IMusic inter) {
         this.inter = inter;
-    }
-
-    public AdapterMusic(List<ItemMusic> musicList) {
         this.musicList = musicList;
         musicFullList=new ArrayList<>(musicList);
     }
+//
+//    public AdapterMusic(List<ItemMusic> musicList) {
+//
+//    }
 
     @NonNull
     @Override
@@ -64,7 +65,9 @@ public class AdapterMusic extends RecyclerView.Adapter<AdapterMusic.MusicViewHol
 
     @Override
     public Filter getFilter() {
+
         return musicFilter;
+
     }
 
     private Filter musicFilter=new Filter() {
@@ -83,6 +86,7 @@ public class AdapterMusic extends RecyclerView.Adapter<AdapterMusic.MusicViewHol
             }
             FilterResults results=new FilterResults();
             results.values=list;
+            Log.d("aaaaaaaaaaaaaaaaa", "performFiltering: "+list);
             return results;
         }
 
@@ -94,39 +98,13 @@ public class AdapterMusic extends RecyclerView.Adapter<AdapterMusic.MusicViewHol
         }
     };
 
+    public void updateMusic(ArrayList<ItemMusic> musicArrayList) {
+        this.musicList = musicArrayList;
+        musicFullList=new ArrayList<>(musicArrayList);
+    }
 
-//    @Override
-//    public Filter getFilter() {
-//        final List<ItemMusic>[] musicListFiltered = new List[]{new ArrayList<>()};
-//        return new Filter() {
-//            @Override
-//            protected FilterResults performFiltering(CharSequence charSequence) {
-//                String charString = charSequence.toString();
-//                if (charString.isEmpty()) {
-//                    musicListFiltered[0] = serviceMusic.getAllMusic();
-//                } else {
-//                    List<ItemMusic> filteredList = new ArrayList<>();
-//                    for (ItemMusic music : serviceMusic.getAllMusic()) {
-//                        if (music.getTitle().toLowerCase().contains(charString.toLowerCase())) {
-//                            filteredList.add(music);
-//                        }
-//                    }
-//                    musicListFiltered[0] = filteredList;
-//                }
-//
-//                FilterResults filterResults = new FilterResults();
-//                filterResults.values = musicListFiltered[0];
-//                return filterResults;
-//            }
-//
-//            @Override
-//            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-//                musicListFiltered[0] = (ArrayList<ItemMusic>) filterResults.values;
-//
-//               notifyDataSetChanged();
-//            }
-//        };
-//    }
+
+
 
 
     static class MusicViewHolder extends RecyclerView.ViewHolder{

@@ -1,4 +1,4 @@
-package com.phuong.musicplayer.component;
+package com.phuong.musicplayer.item;
 
 import java.util.Date;
 
@@ -7,7 +7,7 @@ public class ItemMusic {
     private String path;
     private String title;
     private String singer;
-    private String artisis;
+    private String artists;
     private Date dateAdd;
     private Long duration;
     private boolean isClick;
@@ -69,12 +69,12 @@ public class ItemMusic {
         isClick = click;
     }
 
-    public String getArtisis() {
-        return artisis;
+    public String getArtists() {
+        return artists;
     }
 
-    public void setArtisis(String artisis) {
-        this.artisis = artisis;
+    public void setArtists(String artists) {
+        this.artists = artists;
     }
 
     public long getAlbumId() {

@@ -25,10 +25,11 @@ import com.phuong.musicplayer.Constants;
 import com.phuong.musicplayer.MainActivity;
 import com.phuong.musicplayer.R;
 import com.phuong.musicplayer.adapter.AdapterMusic;
-import com.phuong.musicplayer.component.ItemMusic;
+import com.phuong.musicplayer.item.ItemMusic;
 import com.phuong.musicplayer.inter_.IMusic;
-import com.phuong.musicplayer.service.ServiceMusic;
+import com.phuong.musicplayer.component.ServiceMusic;
 
+import java.util.ArrayList;
 
 
 public class FragmentList extends Fragment implements IMusic {
@@ -44,14 +45,13 @@ public class FragmentList extends Fragment implements IMusic {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         rcMusic = view.findViewById(R.id.rc_music);
         rcMusic.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        adapter=new AdapterMusic(this);
+        adapter=new AdapterMusic(new ArrayList<ItemMusic>(), this);
         rcMusic.setAdapter(adapter);
 
         startStart();
         createConnectService();
         return view;
     }
-
 
 
     private void startStart() {

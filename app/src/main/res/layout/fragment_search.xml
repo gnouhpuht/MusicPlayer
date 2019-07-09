@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <EditText
-        android:id="@+id/et_search"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:hint="Search here....."
         android:padding="8dp"
-        android:layout_height="?actionBarSize" />
+        app:cardCornerRadius="10dp"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:hint="Search here....."
+            android:padding="8dp"
+            android:layout_height="?actionBarSize" />
+    </androidx.cardview.widget.CardView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rc_music_search"
         android:layout_below="@+id/ll_menu"
