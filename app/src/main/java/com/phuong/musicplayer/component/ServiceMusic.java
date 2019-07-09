@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.Build;
@@ -31,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ServiceMusic extends Service implements MediaPlayer.OnCompletionListener {
+public class ServiceMusic extends Service implements MediaPlayer.OnCompletionListener  {
 
     private List<ItemMusic> itemMusics;
     private MusicManager musicManager;
@@ -57,12 +58,11 @@ public class ServiceMusic extends Service implements MediaPlayer.OnCompletionLis
 
     @Override
     public void onCreate() {
-        itemMusics = new ArrayList<>();
         musicManager = new MusicManager();
         listCompleted = new HashMap<>();
-        getAllMusic();
+        itemMusics = getAllMusic();
         super.onCreate();
-        Log.d("aaaaaaaaa", "onCreate: " + getAllMusic());
+//        Log.d("aaaaaaaaa", "onCreate: " + getAllMusic());
     }
 
     public int getDuration() {
@@ -133,6 +133,7 @@ public class ServiceMusic extends Service implements MediaPlayer.OnCompletionLis
 
 
     public List<ItemMusic> getAllMusic() {
+        List<ItemMusic> itemMusics=new ArrayList<>();
         Cursor cursor = getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 null, null, null, null);
         String dataPath = "_data";
@@ -268,6 +269,7 @@ public class ServiceMusic extends Service implements MediaPlayer.OnCompletionLis
         status.contentIntent = pendingIntent;
         startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
     }
+
 
 
 }

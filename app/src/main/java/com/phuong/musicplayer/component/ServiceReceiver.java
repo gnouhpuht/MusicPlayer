@@ -3,16 +3,24 @@ package com.phuong.musicplayer.component;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
 import com.phuong.musicplayer.MyPhoneStateListener;
+import com.phuong.musicplayer.musicmanager.MusicManager;
 
-public class ServiceReceiver extends BroadcastReceiver {
+public class ServiceReceiver extends BroadcastReceiver implements AudioManager.OnAudioFocusChangeListener{
     private TelephonyManager telephony;
+    private MusicManager musicManager;
+
+    public ServiceReceiver(MusicManager musicManager) {
+        this.musicManager = musicManager;
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        MyPhoneStateListener phoneListener = new MyPhoneStateListener();
+        MyPhoneStateListener phoneListener = new MyPhoneStateListener(musicManager);
         telephony = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         telephony.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
     }
@@ -20,4 +28,43 @@ public class ServiceReceiver extends BroadcastReceiver {
     public void onDestroy() {
         telephony.listen(null, PhoneStateListener.LISTEN_NONE);
     }
+
+
+    private AudioManager am = null;
+
+    // Request focus for music stream and pass AudioManager.OnAudioFocusChangeListener
+    // implementation reference
+
+    int result = am.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+
+    @Override
+    public void onAudioFocusChange(int focusChange)
+    {
+        if(focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT)
+        {
+            if (musicManager==null){
+                return;
+            }
+            musicManager.pause();
+            // Pause
+        }
+        else if(focusChange == AudioManager.AUDIOFOCUS_GAIN)
+        {
+            // Resume
+        }
+        else if(focusChange == AudioManager.AUDIOFOCUS_LOSS)
+        {
+            if (musicManager==null){
+                return;
+            }
+            musicManager.pause();
+            // Stop or pause depending on your need
+        }else if(result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED)
+        {
+            // Play
+            musicManager.start();
+        }
+    }
+
+
 }

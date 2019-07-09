@@ -9,6 +9,10 @@ public class MyPhoneStateListener extends PhoneStateListener {
     public static Boolean phoneRinging = false;
     private MusicManager musicManager;
 
+    public MyPhoneStateListener(MusicManager musicManager) {
+        this.musicManager = musicManager;
+    }
+
     public void onCallStateChanged(int state, String incomingNumber) {
 
         switch (state) {
