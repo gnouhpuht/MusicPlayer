@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.phuong.musicplayer.R;
 
-public class FragmentSong extends Fragment {
+public class FragmentPlayList extends Fragment {
 
     @Nullable
     @Override

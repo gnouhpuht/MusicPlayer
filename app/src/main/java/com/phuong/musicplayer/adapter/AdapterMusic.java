@@ -1,10 +1,13 @@
 package com.phuong.musicplayer.adapter;
+import android.content.ContentUris;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,10 +33,6 @@ public class AdapterMusic extends RecyclerView.Adapter<AdapterMusic.MusicViewHol
         this.musicList = musicList;
         musicFullList=new ArrayList<>(musicList);
     }
-//
-//    public AdapterMusic(List<ItemMusic> musicList) {
-//
-//    }
 
     @NonNull
     @Override
@@ -45,8 +44,10 @@ public class AdapterMusic extends RecyclerView.Adapter<AdapterMusic.MusicViewHol
     @Override
     public void onBindViewHolder(@NonNull final MusicViewHolder holder, int i) {
         final ItemMusic data=inter.getData(i);
+        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+        Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri,data.getAlbumId());
         holder.name.setText(data.getName());
-
+        holder.imgMusic.setImageURI(albumArtUri);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +109,7 @@ public class AdapterMusic extends RecyclerView.Adapter<AdapterMusic.MusicViewHol
 
 
     static class MusicViewHolder extends RecyclerView.ViewHolder{
+        private ImageView imgMusic;
         private TextView name;
         private TextView duration;
         private TextView singer;
@@ -116,6 +118,7 @@ public class AdapterMusic extends RecyclerView.Adapter<AdapterMusic.MusicViewHol
             name=itemView.findViewById(R.id.tv_name);
             duration=itemView.findViewById(R.id.tv_duration);
             singer =itemView.findViewById(R.id.tv_singer);
+            imgMusic=itemView.findViewById(R.id.iv_img);
         }
     }
 }

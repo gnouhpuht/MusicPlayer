@@ -10,17 +10,10 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.phuong.musicplayer.R;
 import com.phuong.musicplayer.fragment.FragmentAlbum;
-import com.phuong.musicplayer.fragment.FragmentGenres;
+import com.phuong.musicplayer.fragment.FragmentArtist;
 import com.phuong.musicplayer.fragment.FragmentHome;
 import com.phuong.musicplayer.fragment.FragmentList;
-import com.phuong.musicplayer.fragment.FragmentSong;
-
-
-//import com.example.myapplication.ui.main.AlbumFragment;
-//import com.example.myapplication.ui.main.GenresFragment;
-//import com.example.myapplication.ui.main.ListSongFragment;
-//import com.example.myapplication.ui.main.MusicHomeFragment;
-//import com.example.myapplication.ui.main.PlaylistFragment;
+import com.phuong.musicplayer.fragment.FragmentPlayList;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -50,11 +43,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 FragmentAlbum fragmentAlbum = new FragmentAlbum();
                 return fragmentAlbum;
             case 2:
-                FragmentSong fragmentSong = new FragmentSong();
-                return fragmentSong;
+                FragmentPlayList fragmentPlayList = new FragmentPlayList();
+                return fragmentPlayList;
             case 3:
-                 FragmentGenres fragmentGenres = new FragmentGenres();
-                return fragmentGenres;
+                 FragmentArtist fragmentArtist = new FragmentArtist();
+                return fragmentArtist;
             default:
                 return null;
         }

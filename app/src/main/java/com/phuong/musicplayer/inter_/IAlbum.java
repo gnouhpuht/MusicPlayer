@@ -1,0 +1,9 @@
+package com.phuong.musicplayer.inter_;
+
+import com.phuong.musicplayer.item.ItemAlbum;
+
+public interface IAlbum {
+    int getCountItemAlbum();
+    ItemAlbum getDataAlbum(int position);
+    void onClick(int position);
+}

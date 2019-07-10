@@ -23,6 +23,8 @@ import androidx.core.app.NotificationCompat;
 import com.phuong.musicplayer.Constants;
 import com.phuong.musicplayer.MainActivity;
 import com.phuong.musicplayer.R;
+import com.phuong.musicplayer.item.ItemAlbum;
+import com.phuong.musicplayer.item.ItemArtist;
 import com.phuong.musicplayer.item.ItemMusic;
 import com.phuong.musicplayer.inter_.Action1;
 import com.phuong.musicplayer.musicmanager.MusicManager;
@@ -35,6 +37,7 @@ import java.util.Map;
 public class ServiceMusic extends Service implements MediaPlayer.OnCompletionListener  {
 
     private List<ItemMusic> itemMusics;
+    private List<ItemAlbum> itemAlbums;
     private MusicManager musicManager;
     private int currentPosition;
     private Map<String, Action1<MediaPlayer>> listCompleted;
@@ -61,8 +64,10 @@ public class ServiceMusic extends Service implements MediaPlayer.OnCompletionLis
         musicManager = new MusicManager();
         listCompleted = new HashMap<>();
         itemMusics = getAllMusic();
+        itemAlbums=getAllAlbum();
         super.onCreate();
-//        Log.d("aaaaaaaaa", "onCreate: " + getAllMusic());
+
+
     }
 
     public int getDuration() {
@@ -167,8 +172,81 @@ public class ServiceMusic extends Service implements MediaPlayer.OnCompletionLis
         return itemMusics;
     }
 
+    public List<ItemAlbum> getAllAlbum() {
+        List<ItemAlbum> itemAlbums=new ArrayList<>();
+        Cursor cursor = getApplicationContext().getContentResolver().query(
+                MediaStore.Audio.Albums.getContentUri("external"),
+                new String[] {
+                        MediaStore.Audio.Albums.ARTIST,
+                        MediaStore.Audio.Albums._ID,
+                        MediaStore.Audio.Albums.NUMBER_OF_SONGS,
+                        MediaStore.Audio.Albums.ALBUM},
+                null, null,
+                MediaStore.Audio.Albums.ALBUM + " ASC");
+
+        String dataPath = "album";
+        int indexDataPath = cursor.getColumnIndex(dataPath);
+        String nameAlbum = "artist";
+        int indexDisplayName = cursor.getColumnIndex(nameAlbum);
+        String singerAlbum = "numsongs";
+        int indexSingerAlbum = cursor.getColumnIndex(singerAlbum);
+        cursor.moveToFirst();
 
 
+
+        while (!cursor.isAfterLast()) {
+            String path = cursor.getString(indexDataPath);
+            String name = cursor.getString(indexDisplayName);
+            String singer=cursor.getString(indexSingerAlbum);
+
+            ItemAlbum itemAlbum=new ItemAlbum(name,path,singer);
+
+            itemAlbums.add(itemAlbum);
+            cursor.moveToNext();
+
+        }
+        cursor.close();
+        Log.d("aaaaaaaaaaaaaaaaaaaaaaa", "getAllAlbum: "+itemAlbums.size());
+        return itemAlbums;
+    }
+
+
+    public List<ItemArtist> getAllArtist() {
+        List<ItemArtist> itemArtists=new ArrayList<>();
+        Cursor cursor = getApplicationContext().getContentResolver().query(
+                MediaStore.Audio.Albums.getContentUri("external"),
+                new String[] {
+                        MediaStore.Audio.Albums.ARTIST,
+                        MediaStore.Audio.Albums._ID,
+                        MediaStore.Audio.Albums.NUMBER_OF_SONGS,
+                        MediaStore.Audio.Albums.ALBUM},null, null,
+                MediaStore.Audio.Albums.ALBUM + " ASC");
+
+        String dataPath = "album";
+        int indexDataPath = cursor.getColumnIndex(dataPath);
+        String nameAlbum = "artist";
+        int indexDisplayName = cursor.getColumnIndex(nameAlbum);
+//        String singerAlbum = "artist";
+//        int indexSingerAlbum = cursor.getColumnIndex(singerAlbum);
+        cursor.moveToFirst();
+
+
+
+        while (!cursor.isAfterLast()) {
+            String path = cursor.getString(indexDataPath);
+            String name = cursor.getString(indexDisplayName);
+//            String singer=cursor.getString(indexSingerAlbum);
+
+            ItemArtist itemArtist=new ItemArtist(name,path);
+
+            itemArtists.add(itemArtist);
+            cursor.moveToNext();
+
+        }
+        cursor.close();
+
+        return itemArtists;
+    }
 
     public static class MyBinder extends Binder {
         private ServiceMusic serviceMusic;

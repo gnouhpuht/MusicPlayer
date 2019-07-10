@@ -92,33 +92,33 @@ public class FragmentSearch extends Fragment implements IMusic {
 
 
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        MenuItem searchViewItem = menu.findItem(R.id.app_bar_search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchViewItem);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchView.clearFocus();
-//                if(list.contains(query)){
-//                    adapter.getFilter().filter(query);
-//                }else{
-//                    Toast.makeText(MainActivity.this, "No Match found",Toast.LENGTH_LONG).show();
-//                }
-                return false;
-
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
-                return false;
-            }
-        });
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        inflater = getActivity().getMenuInflater();
+//        inflater.inflate(R.menu.menu, menu);
+//        MenuItem searchViewItem = menu.findItem(R.id.app_bar_search);
+//        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchViewItem);
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                searchView.clearFocus();
+////                if(list.contains(query)){
+////                    adapter.getFilter().filter(query);
+////                }else{
+////                    Toast.makeText(MainActivity.this, "No Match found",Toast.LENGTH_LONG).show();
+////                }
+//                return false;
+//
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                adapter.getFilter().filter(newText);
+//                return false;
+//            }
+//        });
+//    }
 
 
 
