@@ -46,7 +46,7 @@ public class AdapterMusic extends RecyclerView.Adapter<AdapterMusic.MusicViewHol
         final ItemMusic data=inter.getData(i);
         Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
         Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri,data.getAlbumId());
-        holder.name.setText(data.getName());
+        holder.name.setText(data.getName()+"");
         holder.imgMusic.setImageURI(albumArtUri);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

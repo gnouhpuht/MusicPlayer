@@ -43,7 +43,7 @@ public class FragmentPlay extends Fragment implements Action1<MediaPlayer>, View
     private ServiceConnection connection;
     private ServiceMusic serviceMusic;
     private SeekBar seekBar;
-    private TextView tvDuration,tvTitle,tvArtist,ivAvata,tvCurrentTime;
+    private TextView tvDuration,tvTitle,tvArtist,tvCurrentTime;
     private int total;
     private boolean isTouchSeek;
     private Runnable runMusic;
@@ -130,6 +130,7 @@ public class FragmentPlay extends Fragment implements Action1<MediaPlayer>, View
         tvCurrentTime=view.findViewById(R.id.tv_runtime);
         imageView=view.findViewById(R.id.iv_content);
 
+
         btnShuffle.setOnClickListener(this);
         btnRepeat.setOnClickListener(this);
         btnNext.setOnClickListener(this);
@@ -176,11 +177,9 @@ public class FragmentPlay extends Fragment implements Action1<MediaPlayer>, View
         tvTitle.setText(getSong(position).getName());
 //        tvArtist.setText(getSong(position).getArtists());
         tvDuration.setText(format.format(getSong(position).getDuration()));
-        Uri sArtworkUri = Uri
-                .parse("content://media/external/audio/albumart");
-        Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri,
-                getSong(position).getAlbumId());
-//        ivAvata.setImageURI(albumArtUri);
+        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+        Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, getSong(position).getAlbumId());
+        imageView.setImageURI(albumArtUri);
     }
     @Override
     public void onDestroyView() {

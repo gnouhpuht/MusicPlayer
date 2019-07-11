@@ -174,17 +174,18 @@ public class ServiceMusic extends Service implements MediaPlayer.OnCompletionLis
 
     public List<ItemAlbum> getAllAlbum() {
         List<ItemAlbum> itemAlbums=new ArrayList<>();
-        Cursor cursor = getApplicationContext().getContentResolver().query(
-                MediaStore.Audio.Albums.getContentUri("external"),
-                new String[] {
-                        MediaStore.Audio.Albums.ARTIST,
-                        MediaStore.Audio.Albums._ID,
-                        MediaStore.Audio.Albums.NUMBER_OF_SONGS,
-                        MediaStore.Audio.Albums.ALBUM},
-                null, null,
-                MediaStore.Audio.Albums.ALBUM + " ASC");
-
-        String dataPath = "album";
+//        Cursor cursor = getApplicationContext().getContentResolver().query(
+//                MediaStore.Audio.Albums.getContentUri("external"),
+//                new String[] {
+//                        MediaStore.Audio.Albums.ARTIST,
+//                        MediaStore.Audio.Albums._ID,
+//                        MediaStore.Audio.Albums.NUMBER_OF_SONGS,
+//                        MediaStore.Audio.Albums.ALBUM},
+//                null, null,
+//                MediaStore.Audio.Albums.ALBUM + " ASC");
+        Cursor cursor = getContentResolver().query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
+                null, null, null, null);
+        String dataPath = "album_art";
         int indexDataPath = cursor.getColumnIndex(dataPath);
         String nameAlbum = "artist";
         int indexDisplayName = cursor.getColumnIndex(nameAlbum);
@@ -211,20 +212,60 @@ public class ServiceMusic extends Service implements MediaPlayer.OnCompletionLis
     }
 
 
-    public List<ItemArtist> getAllArtist() {
-        List<ItemArtist> itemArtists=new ArrayList<>();
-        Cursor cursor = getApplicationContext().getContentResolver().query(
-                MediaStore.Audio.Albums.getContentUri("external"),
-                new String[] {
-                        MediaStore.Audio.Albums.ARTIST,
-                        MediaStore.Audio.Albums._ID,
-                        MediaStore.Audio.Albums.NUMBER_OF_SONGS,
-                        MediaStore.Audio.Albums.ALBUM},null, null,
-                MediaStore.Audio.Albums.ALBUM + " ASC");
-
-        String dataPath = "album";
+    public List<ItemAlbum> getAllListMusicInAlbum() {
+        List<ItemAlbum> itemAlbums=new ArrayList<>();
+//        Cursor cursor = getApplicationContext().getContentResolver().query(
+//                MediaStore.Audio.Albums.getContentUri("external"),
+//                new String[] {
+//                        MediaStore.Audio.Albums.ARTIST,
+//                        MediaStore.Audio.Albums._ID,
+//                        MediaStore.Audio.Albums.NUMBER_OF_SONGS,
+//                        MediaStore.Audio.Albums.ALBUM},
+//                null, null,
+//                MediaStore.Audio.Albums.ALBUM + " ASC");
+        Cursor cursor = getContentResolver().query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
+                null, null, null, null);
+        String dataPath = "album_art";
         int indexDataPath = cursor.getColumnIndex(dataPath);
         String nameAlbum = "artist";
+        int indexDisplayName = cursor.getColumnIndex(nameAlbum);
+        String singerAlbum = "numsongs";
+        int indexSingerAlbum = cursor.getColumnIndex(singerAlbum);
+        cursor.moveToFirst();
+
+
+
+        while (!cursor.isAfterLast()) {
+            String path = cursor.getString(indexDataPath);
+            String name = cursor.getString(indexDisplayName);
+            String singer=cursor.getString(indexSingerAlbum);
+
+            ItemAlbum itemAlbum=new ItemAlbum(name,path,singer);
+
+            itemAlbums.add(itemAlbum);
+            cursor.moveToNext();
+
+        }
+        cursor.close();
+        Log.d("aaaaaaaaaaaaaaaaaaaaaaa", "getAllAlbum: "+itemAlbums.size());
+        return itemAlbums;
+    }
+
+    public List<ItemArtist> getAllArtist() {
+        List<ItemArtist> itemArtists=new ArrayList<>();
+//        Cursor cursor = getApplicationContext().getContentResolver().query(
+//                MediaStore.Audio.Albums.getContentUri("external"),
+//                new String[] {
+//                        MediaStore.Audio.Albums.ARTIST,
+//                        MediaStore.Audio.Albums._ID,
+//                        MediaStore.Audio.Albums.NUMBER_OF_SONGS,
+//                        MediaStore.Audio.Albums.ALBUM},null, null,
+//                MediaStore.Audio.Albums.ALBUM + " ASC");
+        Cursor cursor = getContentResolver().query(MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI,
+                null, null, null, null);
+        String dataPath = "artist";
+        int indexDataPath = cursor.getColumnIndex(dataPath);
+        String nameAlbum = "number_of_albums";
         int indexDisplayName = cursor.getColumnIndex(nameAlbum);
 //        String singerAlbum = "artist";
 //        int indexSingerAlbum = cursor.getColumnIndex(singerAlbum);

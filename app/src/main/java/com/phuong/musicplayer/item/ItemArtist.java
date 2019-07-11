@@ -5,7 +5,7 @@ public class ItemArtist {
     private String path;
 
 
-    public ItemArtist(String nameArtist, String path) {
+    public ItemArtist(String path,String nameArtist ) {
         this.nameArtist = nameArtist;
         this.path = path;
     }

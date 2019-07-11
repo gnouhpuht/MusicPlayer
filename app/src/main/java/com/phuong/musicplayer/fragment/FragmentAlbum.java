@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -79,6 +81,14 @@ public class FragmentAlbum extends Fragment implements IAlbum {
 
     @Override
     public void onClick(int position) {
-
+        FragmentManager listMusic = getActivity().getSupportFragmentManager();
+        FragmentTransaction transactionSearch = listMusic.beginTransaction();
+        Fragment fListMusic = listMusic.findFragmentByTag(FragmentHome.class.getName());
+        FragmentListInAlbum fragmentListInAlbum = new FragmentListInAlbum();
+        transactionSearch.hide(fListMusic);
+        transactionSearch.add(R.id.fl_home, fragmentListInAlbum, FragmentListInAlbum.class.getName());
+//                fragmentSearch.updateListMusic(serviceMusic.getAllMusic());
+        transactionSearch.addToBackStack(null);
+        transactionSearch.commit();
     }
 }

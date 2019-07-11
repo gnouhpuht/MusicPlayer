@@ -11,12 +11,12 @@ import androidx.fragment.app.Fragment;
 
 import com.phuong.musicplayer.R;
 
-public class FragmentPlayList extends Fragment {
+public class FragmentListInAlbum extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_playlist,container,false);
+        View view=LayoutInflater.from(container.getContext()).inflate(R.layout.fragment_list_in_album,container,false);
         return view;
     }
 }
