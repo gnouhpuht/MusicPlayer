@@ -4,11 +4,10 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.MediaController;
-
 import java.io.IOException;
 
-public class MusicManager implements MediaController.MediaPlayerControl {
 
+public class MusicManager implements MediaController.MediaPlayerControl {
     private MediaPlayer mediaPlayer;
     private int currentPosition;
 
@@ -16,6 +15,8 @@ public class MusicManager implements MediaController.MediaPlayerControl {
     public MusicManager() {
 
     }
+
+
 
     public void updatePath(String path, MediaPlayer.OnCompletionListener cmp){
         if (mediaPlayer!=null){
@@ -81,6 +82,7 @@ public class MusicManager implements MediaController.MediaPlayerControl {
 
     @Override
     public void seekTo(int pos) {
+        if (mediaPlayer!=null)
         mediaPlayer.seekTo(pos);
     }
 
@@ -145,5 +147,7 @@ public class MusicManager implements MediaController.MediaPlayerControl {
             e.printStackTrace();
         }
     }
+
+
 
 }

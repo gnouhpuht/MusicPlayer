@@ -1,6 +1,6 @@
 package com.phuong.musicplayer.inter_;
 
-import com.phuong.musicplayer.item.ItemAlbum;
+import com.phuong.musicplayer.model.ItemAlbum;
 
 public interface IAlbum {
     int getCountItemAlbum();

@@ -1,11 +1,9 @@
 package com.phuong.musicplayer.fragment;
 
 import android.content.ComponentName;
-import android.content.ContentUris;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,31 +17,31 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-
-
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import com.phuong.musicplayer.R;
-import com.phuong.musicplayer.item.ItemMusic;
+import com.phuong.musicplayer.model.ItemMusic;
 import com.phuong.musicplayer.inter_.Action1;
 import com.phuong.musicplayer.musicmanager.MusicManager;
-import com.phuong.musicplayer.component.ServiceMusic;
-
+import com.phuong.musicplayer.sevice.ServicePlayMusic;
 import java.text.SimpleDateFormat;
 import java.util.Random;
-
 import static android.content.Context.BIND_AUTO_CREATE;
 
+
+
+
 public class FragmentPlay extends Fragment implements Action1<MediaPlayer>, View.OnClickListener {
-    private ImageButton btnPlay, btnNext, btnBack, btnRepeat, btnShuffle;
+    private ImageButton btnPlay, btnNext, btnBack, btnRepeat, btnShuffle,btnDown;
     private MusicManager musicManager;
     private ServiceConnection connection;
-    private ServiceMusic serviceMusic;
+    private ServicePlayMusic servicePlayMusic;
     private SeekBar seekBar;
-    private TextView tvDuration,tvTitle,tvArtist,tvCurrentTime;
+    private TextView tvDuration,tvTitle,tvCurrentTime;
     private int total;
     private boolean isTouchSeek;
     private Runnable runMusic;
@@ -84,13 +82,19 @@ public class FragmentPlay extends Fragment implements Action1<MediaPlayer>, View
         runMusic = new Runnable() {
             @Override
             public void run() {
-                if (serviceMusic.getMusicManager() == null) {
+
+                if (servicePlayMusic == null) {
                     return;
                 }
+
+                if (servicePlayMusic.getMusicManager() == null) {
+                    return;
+                }
+
                 if (!isTouchSeek)
-                    tvCurrentTime.setText(format.format(serviceMusic.getMusicManager().getCurrentPosition()));
+                    tvCurrentTime.setText(format.format(servicePlayMusic.getMusicManager().getCurrentPosition()));
                 // update pro
-                seekBar.setProgress( serviceMusic.getMusicManager().getCurrentPosition());
+                seekBar.setProgress( servicePlayMusic.getMusicManager().getCurrentPosition());
                 handler.postDelayed(this, 500);
             }
         };
@@ -111,7 +115,7 @@ public class FragmentPlay extends Fragment implements Action1<MediaPlayer>, View
 
                      @Override
                      public void onStopTrackingTouch(SeekBar seekBar) {
-                         serviceMusic.getMusicManager().seekTo(seekBar.getProgress());
+                         servicePlayMusic.getMusicManager().seekTo(seekBar.getProgress());
                          isTouchSeek = false;
                      }
                  }
@@ -129,6 +133,7 @@ public class FragmentPlay extends Fragment implements Action1<MediaPlayer>, View
         tvTitle=view.findViewById(R.id.tv_namemusic);
         tvCurrentTime=view.findViewById(R.id.tv_runtime);
         imageView=view.findViewById(R.id.iv_content);
+        btnDown=view.findViewById(R.id.btn_down);
 
 
         btnShuffle.setOnClickListener(this);
@@ -136,11 +141,12 @@ public class FragmentPlay extends Fragment implements Action1<MediaPlayer>, View
         btnNext.setOnClickListener(this);
         btnBack.setOnClickListener(this);
         btnPlay.setOnClickListener(this);
+        btnDown.setOnClickListener(this);
 
     }
 
     public ItemMusic getSong(int position){
-        return serviceMusic.getAllMusic().get(position);
+        return servicePlayMusic.getAllMusic().get(position);
     }
 
     public void getMusicManager(MusicManager mediaMusicManager, int position){
@@ -152,15 +158,15 @@ public class FragmentPlay extends Fragment implements Action1<MediaPlayer>, View
         connection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-                ServiceMusic.MyBinder myBinder = (ServiceMusic.MyBinder) iBinder;
-                serviceMusic = myBinder.getServiceMusic();
-                seekBar.setMax(serviceMusic.getDuration());
-                tvDuration.setText(format.format(serviceMusic.getDuration()));
-                total = serviceMusic.getDuration();
-                upSongInfo(serviceMusic.getCurrentPosition());
-                serviceMusic.register(FragmentPlay.class.getName(), FragmentPlay.this);
-
+                ServicePlayMusic.MyBinder myBinder = (ServicePlayMusic.MyBinder) iBinder;
+                servicePlayMusic = myBinder.getServicePlayMusic();
+                seekBar.setMax(servicePlayMusic.getDuration());
+                tvDuration.setText(format.format(servicePlayMusic.getDuration()));
+                total = servicePlayMusic.getDuration();
+                upSongInfo(servicePlayMusic.getCurrentPosition());
+                servicePlayMusic.register(FragmentPlay.class.getName(), FragmentPlay.this);
             }
+
 
             @Override
             public void onServiceDisconnected(ComponentName componentName) {
@@ -169,7 +175,7 @@ public class FragmentPlay extends Fragment implements Action1<MediaPlayer>, View
         };
         //gui thong diep ket noi den service
         Intent intent = new Intent();
-        intent.setClass(this.getContext(), ServiceMusic.class);
+        intent.setClass(this.getContext(), ServicePlayMusic.class);
         getContext().bindService(intent, connection, BIND_AUTO_CREATE);
     }
 
@@ -177,49 +183,49 @@ public class FragmentPlay extends Fragment implements Action1<MediaPlayer>, View
         tvTitle.setText(getSong(position).getName());
 //        tvArtist.setText(getSong(position).getArtists());
         tvDuration.setText(format.format(getSong(position).getDuration()));
-        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
-        Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, getSong(position).getAlbumId());
-        imageView.setImageURI(albumArtUri);
+//        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+//        Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, getSong(position).getAlbumId());
+//        imageView.setImageURI(albumArtUri);
     }
     @Override
     public void onDestroyView() {
-        if (serviceMusic != null ){
-            serviceMusic.unregister(FragmentPlay.class.getName());
+        if (servicePlayMusic != null ){
+            servicePlayMusic.unregister(FragmentPlay.class.getName());
         }
         super.onDestroyView();
     }
 
     @Override
     public void call(MediaPlayer mediaPlayer) {
-        upSongInfo(serviceMusic.getCurrentPosition());
+        upSongInfo(servicePlayMusic.getCurrentPosition());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onClick(View view) {
-        position = serviceMusic.getCurrentPosition();
+        position = servicePlayMusic.getCurrentPosition();
         switch (view.getId()) {
             case R.id.btn_play:
 
-                if (serviceMusic.isPlaying()) {
+                if (servicePlayMusic.isPlaying()) {
                     btnPlay.setBackgroundResource(R.drawable.pause);
-                    serviceMusic.continueSong();
+                    servicePlayMusic.continueSong();
                     makeAnimation(R.anim.rotate);
                 } else {
                     btnPlay.setBackgroundResource(R.drawable.imgplay);
-                    serviceMusic.getMusicManager().pause();
+                    servicePlayMusic.getMusicManager().pause();
                     imageView.clearAnimation();
                 }
                 upDateTimeSong();
                 break;
             case R.id.btn_next:
-                if (position >= serviceMusic.getAllMusic().size() - 1) {
+                if (position >= servicePlayMusic.getAllMusic().size() - 1) {
                     position = -1;
                 }
                 position = position + 1;
-                if ( serviceMusic != null ){
+                if ( servicePlayMusic != null ){
                     upSongInfo(position);
-                    serviceMusic.playMusic(position);
+                    servicePlayMusic.playMusic(position);
                 }
                 btnPlay.setBackgroundResource(R.drawable.pause);
                 makeAnimation(R.anim.rotate);
@@ -227,34 +233,46 @@ public class FragmentPlay extends Fragment implements Action1<MediaPlayer>, View
                 break;
             case R.id.btn_back:
                 if (position <= 0) {
-                    position = serviceMusic.getAllMusic().size();
+                    position = servicePlayMusic.getAllMusic().size();
                 }
 
                 position = position - 1;
-                if ( serviceMusic != null ){
+                if ( servicePlayMusic != null ){
                     upSongInfo(position);
-                    serviceMusic.playMusic(position);
+                    servicePlayMusic.playMusic(position);
                 }
                 btnPlay.setBackgroundResource(R.drawable.pause);
                 makeAnimation(R.anim.rotate);
                 break;
             case R.id.btn_shuffle:
                 Random rd=new Random();
-                position = rd.nextInt(serviceMusic.getAllMusic().size() - 1) + 1;
-                if ( serviceMusic != null ){
+                position = rd.nextInt(servicePlayMusic.getAllMusic().size() - 1) + 1;
+                if ( servicePlayMusic != null ){
                     upSongInfo(position);
-                    serviceMusic.playMusic(position);
+                    servicePlayMusic.playMusic(position);
                 }
                 btnPlay.setBackgroundResource(R.drawable.pause);
                 makeAnimation(R.anim.rotate);
                 break;
             case R.id.btn_repeat:
-                if ( serviceMusic != null ){
+                if ( servicePlayMusic != null ){
                     upSongInfo(position);
-                    serviceMusic.playMusic(position);
+                    servicePlayMusic.playMusic(position);
                 }
                 btnPlay.setBackgroundResource(R.drawable.pause);
                 makeAnimation(R.anim.rotate);
+                break;
+            case R.id.btn_down:
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                Fragment fragment = manager.findFragmentByTag(FragmentPlay.class.getName());
+                FragmentHome fragmentHome= new FragmentHome();
+                transaction.hide(fragment);
+                transaction.add(R.id.fl_home, fragmentHome, FragmentHome.class.getName());
+//                fragmentHome.viewPager(view);
+                transaction.addToBackStack(null);
+                transaction.commit();
+
                 break;
         }
     }

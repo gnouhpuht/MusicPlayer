@@ -1,7 +1,7 @@
 package com.phuong.musicplayer.inter_;
 
 
-import com.phuong.musicplayer.item.ItemArtist;
+import com.phuong.musicplayer.model.ItemArtist;
 
 public interface IArtist {
     int getCountItemArtist();

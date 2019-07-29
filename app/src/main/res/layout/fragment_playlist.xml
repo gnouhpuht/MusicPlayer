@@ -6,11 +6,19 @@
     android:layout_height="match_parent">
 
     <Button
+        android:id="@+id/btn_playlist"
         android:layout_width="match_parent"
         android:layout_marginTop="8dp"
         android:typeface="sans"
+        android:background="#FF6E40"
         android:text="Create Playlist"
         android:layout_marginRight="50dp"
         android:layout_marginLeft="50dp"
         android:layout_height="56dp" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rc_playlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

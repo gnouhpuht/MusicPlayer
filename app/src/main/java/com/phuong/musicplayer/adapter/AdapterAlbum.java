@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.phuong.musicplayer.R;
 import com.phuong.musicplayer.inter_.IAlbum;
-import com.phuong.musicplayer.item.ItemAlbum;
+import com.phuong.musicplayer.model.ItemAlbum;
 
 public class AdapterAlbum extends RecyclerView.Adapter<AdapterAlbum.AlbumViewHolder>{
     private IAlbum inter;
@@ -31,7 +31,7 @@ public class AdapterAlbum extends RecyclerView.Adapter<AdapterAlbum.AlbumViewHol
     public void onBindViewHolder(@NonNull final AlbumViewHolder holder, int position) {
         ItemAlbum data=inter.getDataAlbum(position);
         holder.nameAlbum.setText(data.getNameAlbum());
-        holder.singerAlbum.setText(data.getSinger());
+        holder.numberSong.setText(data.getNumberSong());
 //        holder.imgAlbum.setImageResource((int) data.getAlbumId());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -50,14 +50,14 @@ public class AdapterAlbum extends RecyclerView.Adapter<AdapterAlbum.AlbumViewHol
     static class AlbumViewHolder extends RecyclerView.ViewHolder{
         private ImageView imgAlbum;
         private TextView nameAlbum;
-        private TextView singerAlbum;
+        private TextView numberSong;
 
         public AlbumViewHolder(@NonNull View itemView) {
             super(itemView);
 
             imgAlbum=itemView.findViewById(R.id.iv_album);
             nameAlbum=itemView.findViewById(R.id.tv_name_album);
-            singerAlbum=itemView.findViewById(R.id.tv_singer_album);
+            numberSong =itemView.findViewById(R.id.tv_number_song_album);
         }
     }
 

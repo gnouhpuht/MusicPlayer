@@ -10,32 +10,26 @@ import android.os.IBinder;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Filter;
-import android.widget.SearchView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.phuong.musicplayer.R;
 import com.phuong.musicplayer.adapter.AdapterMusic;
-import com.phuong.musicplayer.item.ItemMusic;
+import com.phuong.musicplayer.model.ItemArtist;
+import com.phuong.musicplayer.model.ItemMusic;
 import com.phuong.musicplayer.inter_.IMusic;
-import com.phuong.musicplayer.component.ServiceMusic;
+import com.phuong.musicplayer.sevice.ServiceSearchMusic;
 
 import java.util.ArrayList;
 
 public class FragmentSearch extends Fragment implements IMusic {
-    private ServiceMusic serviceMusic;
+    private ServiceSearchMusic serviceSearchMusic;
     private RecyclerView rcMusic;
     private AdapterMusic adapter;
     private ServiceConnection connection;
@@ -44,7 +38,7 @@ public class FragmentSearch extends Fragment implements IMusic {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setHasOptionsMenu(true);
+
     }
 
     @SuppressLint("WrongConstant")
@@ -54,7 +48,8 @@ public class FragmentSearch extends Fragment implements IMusic {
         View view=inflater.inflate(R.layout.fragment_search,container,false);
         rcMusic = view.findViewById(R.id.rc_music_search);
         rcMusic.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        adapter=new AdapterMusic(new ArrayList<ItemMusic>(), this);
+        serviceSearchMusic= ServiceSearchMusic.getInstance();
+        adapter=new AdapterMusic(serviceSearchMusic.getAllMusic(), this);
         rcMusic.setAdapter(adapter);
         etSearch=view.findViewById(R.id.et_search);
         etSearch.addTextChangedListener(new TextWatcher() {
@@ -92,47 +87,21 @@ public class FragmentSearch extends Fragment implements IMusic {
 
 
 
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu, inflater);
-//        inflater = getActivity().getMenuInflater();
-//        inflater.inflate(R.menu.menu, menu);
-//        MenuItem searchViewItem = menu.findItem(R.id.app_bar_search);
-//        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchViewItem);
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                searchView.clearFocus();
-////                if(list.contains(query)){
-////                    adapter.getFilter().filter(query);
-////                }else{
-////                    Toast.makeText(MainActivity.this, "No Match found",Toast.LENGTH_LONG).show();
-////                }
-//                return false;
-//
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                adapter.getFilter().filter(newText);
-//                return false;
-//            }
-//        });
-//    }
+
 
 
 
     @Override
     public int getCountItem() {
-        if (serviceMusic == null) {
+        if (serviceSearchMusic == null) {
             return 0;
         }
-        return serviceMusic.getAllMusic().size();
+        return serviceSearchMusic.getAllMusic().size();
     }
 
     @Override
     public ItemMusic getData(int position) {
-        return serviceMusic.getAllMusic().get(position);
+        return serviceSearchMusic.getAllMusic().get(position);
     }
 
     @Override
@@ -144,8 +113,8 @@ public class FragmentSearch extends Fragment implements IMusic {
         connection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                ServiceMusic.MyBinder myBinder = (ServiceMusic.MyBinder) service;
-                serviceMusic = myBinder.getServiceMusic();
+                ServiceSearchMusic.MyBinder myBinder = (ServiceSearchMusic.MyBinder) service;
+                serviceSearchMusic = myBinder.getServiceSearchMusic();
                 rcMusic.getAdapter().notifyDataSetChanged();
             }
 
@@ -156,7 +125,7 @@ public class FragmentSearch extends Fragment implements IMusic {
         };
 
         Intent intent = new Intent();
-        intent.setClass(getContext(), ServiceMusic.class);
+        intent.setClass(getContext(), ServiceSearchMusic.class);
         getContext().bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 }

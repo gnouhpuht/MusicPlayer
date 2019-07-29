@@ -1,6 +1,4 @@
 package com.phuong.musicplayer.adapter;
-import android.content.ContentUris;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,15 +7,11 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-
 import com.phuong.musicplayer.R;
-import com.phuong.musicplayer.item.ItemMusic;
+import com.phuong.musicplayer.model.ItemMusic;
 import com.phuong.musicplayer.inter_.IMusic;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +21,8 @@ public class AdapterMusic extends RecyclerView.Adapter<AdapterMusic.MusicViewHol
     private SimpleDateFormat format=new SimpleDateFormat("mm:ss");
     private List<ItemMusic> musicList;
     private List<ItemMusic> musicFullList;
+    private final int VIEW_TYPE_ITEM = 0;
+    private final int VIEW_TYPE_LOADING = 1;
 
     public AdapterMusic(List<ItemMusic> musicList,IMusic inter) {
         this.inter = inter;
@@ -36,7 +32,7 @@ public class AdapterMusic extends RecyclerView.Adapter<AdapterMusic.MusicViewHol
 
     @NonNull
     @Override
-    public MusicViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public MusicViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view= LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_music,viewGroup,false);
         return new MusicViewHolder(view);
     }
@@ -44,10 +40,10 @@ public class AdapterMusic extends RecyclerView.Adapter<AdapterMusic.MusicViewHol
     @Override
     public void onBindViewHolder(@NonNull final MusicViewHolder holder, int i) {
         final ItemMusic data=inter.getData(i);
-        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
-        Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri,data.getAlbumId());
+//        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+//        Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri,data.getAlbumId());
         holder.name.setText(data.getName()+"");
-        holder.imgMusic.setImageURI(albumArtUri);
+//        holder.imgMusic.setImageURI(albumArtUri);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

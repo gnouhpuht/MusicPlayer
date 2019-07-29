@@ -5,11 +5,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.phuong.musicplayer.fragment.FragmentHome;
 import com.phuong.musicplayer.fragment.FragmentPlay;
 import com.phuong.musicplayer.musicmanager.MusicManager;
+import com.phuong.musicplayer.sevice.ServiceNotification;
+import com.phuong.musicplayer.sevice.ServicePlayMusic;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -17,6 +20,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         inits();
+
+        Intent intent=new Intent(getApplicationContext(), ServiceNotification.class);
+        intent.setAction(ServiceNotification.ACTION_PLAY);
+        startService(intent);
     }
     private void inits() {
         FragmentManager manager = getSupportFragmentManager();

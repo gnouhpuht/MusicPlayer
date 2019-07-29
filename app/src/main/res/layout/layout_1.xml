@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?actionBarSize"
+    android:background="#EC407A"
+    android:orientation="vertical">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_img_notify"
+        android:layout_width="?actionBarSize"
+        android:layout_height="?actionBarSize"
+        android:src="@drawable/img"
+        android:padding="2dp"/>
+
+    <LinearLayout
+        android:layout_toRightOf="@+id/iv_img_notify"
+        android:layout_toLeftOf="@+id/btn_back_notify"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingRight="@dimen/_10sdp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_name_notify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="Stay with me"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:textColor="@color/grey_50"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_singer_notify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_below="@+id/tv_name_notify"
+            android:text="Rochus"
+            android:singleLine="true"
+            android:textColor="@color/grey_50"
+            android:textSize="12dp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/btn_back_notify"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/btn_play_notify"
+        android:src="@drawable/ic_skip_previous_black_24dp" />
+
+    <ImageView
+        android:id="@+id/btn_play_notify"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_toLeftOf="@+id/btn_next_notify"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_play_arrow_black_24dp" />
+
+    <ImageView
+        android:id="@+id/btn_next_notify"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_skip_next_black_24dp" />
+</RelativeLayout>

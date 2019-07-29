@@ -10,25 +10,23 @@ import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.phuong.musicplayer.R;
 import com.phuong.musicplayer.adapter.AdapterArtist;
-import com.phuong.musicplayer.component.ServiceMusic;
 import com.phuong.musicplayer.inter_.IArtist;
-import com.phuong.musicplayer.item.ItemArtist;
+import com.phuong.musicplayer.model.ItemArtist;
+import com.phuong.musicplayer.sevice.ServicePlayMusic;
+
 
 public class FragmentArtist extends Fragment implements IArtist {
     private RecyclerView rcArtist;
-    private ServiceMusic serviceMusic;
+    private ServicePlayMusic servicePlayMusic;
     private ServiceConnection connection;
     private AdapterArtist adapterArtist;
 
@@ -46,12 +44,15 @@ public class FragmentArtist extends Fragment implements IArtist {
         return view;
     }
 
+
+
+
     private void createConnectService() {
         connection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                ServiceMusic.MyBinder myBinder = (ServiceMusic.MyBinder) service;
-                serviceMusic = myBinder.getServiceMusic();
+                ServicePlayMusic.MyBinder myBinder = (ServicePlayMusic.MyBinder) service;
+                servicePlayMusic = myBinder.getServicePlayMusic();
                 rcArtist.getAdapter().notifyDataSetChanged();
             }
 
@@ -62,21 +63,22 @@ public class FragmentArtist extends Fragment implements IArtist {
         };
 
         Intent intent = new Intent();
-        intent.setClass(getContext(), ServiceMusic.class);
+        intent.setClass(getContext(), ServicePlayMusic.class);
         getContext().bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     public int getCountItemArtist() {
-        if (serviceMusic==null){
+        if (servicePlayMusic==null){
             return 0;
         }
-        return serviceMusic.getAllArtist().size();
+        return servicePlayMusic.getAllArtist().size();
     }
 
     @Override
     public ItemArtist getData(int position) {
-        return serviceMusic.getAllArtist().get(position);
+//        return null;
+        return servicePlayMusic.getAllArtist().get(position);
     }
 
     @Override
